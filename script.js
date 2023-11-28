@@ -3,11 +3,19 @@ const calculator = document.querySelector(".calculator");
 const displayBox = document.querySelector(".calculator__display");
 const calculatorKeys = document.querySelector(".calculator__keys");
 
-// Control Operends and Operator
-let operator = "";
-let previousOperend = 0;
-let currentOperend = 0;
-let result = 0;
+// Initial Values
+let operations = {
+	add: (x, y) => parseFloat((x + y).toFixed(2)),
+	subtract: (x, y) => parseFloat((x - y).toFixed(2)),
+	multiply: (x, y) => parseFloat((x * y).toFixed(2)),
+	divide: (x, y) => parseFloat((x / y).toFixed(2)),
+};
+
+let previousOperend = "";
+let currentOperend = "";
+let operator = null;
+let result = null;
+let equalClicked = false;
 /*************************** Event Listeners **************************/
 // Listen for key strokes
 calculatorKeys.addEventListener("click", (e) => {
@@ -17,62 +25,59 @@ calculatorKeys.addEventListener("click", (e) => {
 	const value = target.dataset.value;
 	/******** Actions ********/
 	if (action) {
-		switch (action) {
-			case "add":
-				previousOperend += +currentOperend;
-				currentOperend = 0;
-				operator = add(+previousOperend);
-				break;
-			case "subtract":
-				break;
-			case "multiply":
-				break;
-			case "divide":
-				break;
-			case "calculate":
-				result = operator(+currentOperend);
-				previousOperend = 0;
-				currentOperend = result;
-				console.log(result);
-				break;
-			case "decimal":
-				break;
-			case "clear":
-				break;
+		if (operations[action]) {
+			if (operator && !equalClicked) {
+				operate(operator, previousOperend, currentOperend);
+			}
+			updateOperends("");
+			operator = operations[action];
+		}
+		if (action === "calculate") {
+			equalClicked = true;
+			operate(operator, previousOperend, currentOperend);
+		}
+		if (action === "clear") {
+			reset();
+		}
+		if (action === "decimal") {
+			if (displayBox.textContent.includes(".")) return;
+			currentOperend += ".";
+			updateDisplay();
 		}
 	}
 	/******* Values ********/
 	if (value) {
-		updateOperends(value);
+		currentOperend += value;
+		updateDisplay();
 	}
 });
 /*************************** Functions ********************************/
+// Operator function
+function operate(operator, x, y) {
+	result = operator(+x, +y);
+	updateOperends(result);
+	updateDisplay(result);
+}
 // Handle Operends
-function updateOperends(operend) {
-	currentOperend += +operend;
+function updateOperends(value) {
+	previousOperend = currentOperend;
+	currentOperend = value;
 }
 // Handle Display
-function updateDisplay(number) {
-	displayBox.textContent += number;
+function updateDisplay(value) {
+	if (displayBox.textContent === "0") {
+		displayBox.textContent = "";
+	}
+	displayBox.textContent = value || currentOperend;
 }
 function clearDisplay() {
 	displayBox.textContent = "";
 }
-// Operators
-function add(num1) {
-	return (num2) => {
-		return parseFloat((num1 + num2).toFixed(2));
-	};
-}
-
-function subtract(num1, num2) {
-	return parseFloat((num1 - num2).toFixed(2));
-}
-
-function multiply(num1, num2) {
-	return parseFloat((num1 * num2).toFixed(2));
-}
-
-function divide(num1, num2) {
-	return parseFloat((num1 / num2).toFixed(2));
+function reset() {
+	clearDisplay();
+	previousOperend = "";
+	currentOperend = "";
+	operator = null;
+	result = null;
+	equalClicked = false;
 }
