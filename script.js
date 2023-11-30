@@ -7,10 +7,10 @@ const numberKeys = document.querySelectorAll(".key[data-value]");
 const operatorKeys = document.querySelectorAll(".key--operator");
 // Initial Values
 let operations = {
-	add: (x, y) => parseFloat((x + y).toFixed(2)),
-	subtract: (x, y) => parseFloat((x - y).toFixed(2)),
-	multiply: (x, y) => parseFloat((x * y).toFixed(2)),
-	divide: (x, y) => parseFloat((x / y).toFixed(2)),
+	"+": (x, y) => parseFloat((x + y).toFixed(2)),
+	"-": (x, y) => parseFloat((x - y).toFixed(2)),
+	"*": (x, y) => parseFloat((x * y).toFixed(2)),
+	"/": (x, y) => parseFloat((x / y).toFixed(2)),
 };
 
 let previousOperend = "";
@@ -28,11 +28,7 @@ calculatorKeys.addEventListener("click", (e) => {
 	/******** Actions ********/
 	if (action) {
 		if (operations[action]) {
-			if (operator && !equalClicked) {
-				operate(operator, previousOperend, currentOperend);
-			}
-			updateOperends("");
-			operator = operations[action];
+			updateOperator(action);
 		}
 		if (action === "calculate") {
 			equalClicked = true;
@@ -42,23 +38,74 @@ calculatorKeys.addEventListener("click", (e) => {
 			reset();
 		}
 		if (action === "decimal") {
-			if (displayBox.textContent.includes(".")) return;
-			currentOperend += ".";
-			updateDisplay();
+			appendNewChar(".");
 		}
 		if (action === "delete") {
-			currentOperend = currentOperend.toString().slice(0, -1);
-			updateDisplay();
+			deleteOneCharToLeft();
 		}
 	}
 	/******* Values ********/
 	if (value) {
-		currentOperend += value;
-		updateDisplay();
+		appendNewChar(value);
 	}
 	manageInteractivity(target, value, action);
 });
+
+/*************************** Keyboard Support ***********************/
+document.addEventListener("keydown", (e) => {
+	const keyValue = e.key;
+	console.log(/[0-9.//+*/-=]|Backspace|Enter/.test(keyValue));
+	if (!/[0-9.//+*/-=]|Backspace|Enter/.test(keyValue)) {
+		e.preventDefault();
+		return;
+	}
+	if (Number(keyValue) || keyValue === ".") {
+		appendNewChar(keyValue);
+	} else {
+		switch (keyValue) {
+			case "+":
+			case "-":
+			case "*":
+			case "/":
+				updateOperator(keyValue);
+				break;
+			case ".":
+				break;
+			case "Enter":
+			case "=":
+				equalClicked = true;
+				operate(operator, previousOperend, currentOperend);
+				break;
+			case "Backspace":
+				if (e.shiftKey) {
+					reset();
+				} else {
+					deleteOneCharToLeft();
+				}
+		}
+	}
+});
 /*************************** Functions ********************************/
+function updateOperator(action) {
+	if (operator && !equalClicked) {
+		operate(operator, previousOperend, currentOperend);
+	}
+	updateOperends("");
+	operator = operations[action];
+}
+function deleteOneCharToLeft() {
+	if (displayBox.textContent.length === 1) {
+		reset();
+		retur;
+	}
+	currentOperend = currentOperend.toString().slice(0, -1);
+	updateDisplay();
+}
+function appendNewChar(value) {
+	if (value === "." && displayBox.textContent.includes(".")) return;
+	currentOperend += value;
+	updateDisplay();
+}
 // Manage Interactivity
 function manageInteractivity(target, value, action) {
 	if (action === "calculate" || action === "clear") {
@@ -94,7 +141,7 @@ function updateDisplay(value) {
 	displayBox.textContent = value || currentOperend;
 }
 function clearDisplay() {
-	displayBox.textContent = "";
+	displayBox.textContent = "0";
 }
 function reset() {
 	clearDisplay();
