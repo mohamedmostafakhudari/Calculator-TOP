@@ -46,6 +46,10 @@ calculatorKeys.addEventListener("click", (e) => {
 			currentOperend += ".";
 			updateDisplay();
 		}
+		if (action === "delete") {
+			currentOperend = currentOperend.toString().slice(0, -1);
+			updateDisplay();
+		}
 	}
 	/******* Values ********/
 	if (value) {
