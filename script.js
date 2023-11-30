@@ -18,6 +18,9 @@ let currentOperend = "";
 let operator = null;
 let result = null;
 let equalClicked = false;
+
+/*************************** Add Keyboard Codes To DOM */
+addKeyboardCodes();
 /*************************** Event Listeners **************************/
 // Listen for key strokes
 calculatorKeys.addEventListener("click", (e) => {
@@ -28,11 +31,12 @@ calculatorKeys.addEventListener("click", (e) => {
 	/******** Actions ********/
 	if (action) {
 		if (operations[action]) {
-			updateOperator(action);
+			updateOperator(target, action);
 		}
 		if (action === "calculate") {
 			equalClicked = true;
 			operate(operator, previousOperend, currentOperend);
+			resetBtns();
 		}
 		if (action === "clear") {
 			reset();
@@ -46,28 +50,29 @@ calculatorKeys.addEventListener("click", (e) => {
 	}
 	/******* Values ********/
 	if (value) {
-		appendNewChar(value);
+		appendNewChar(target, value);
 	}
-	manageInteractivity(target, value, action);
 });
 
 /*************************** Keyboard Support ***********************/
 document.addEventListener("keydown", (e) => {
 	const keyValue = e.key;
-	console.log(/[0-9.//+*/-=]|Backspace|Enter/.test(keyValue));
+	const keyCode = keyValue.charCodeAt();
+	const target = document.querySelector(`.key[data-code="${keyCode}"]`);
 	if (!/[0-9.//+*/-=]|Backspace|Enter/.test(keyValue)) {
 		e.preventDefault();
 		return;
 	}
-	if (Number(keyValue) || keyValue === ".") {
-		appendNewChar(keyValue);
+	console.log(!!Number(keyValue));
+	if (Number(keyValue) || keyValue === "." || keyValue === "0") {
+		appendNewChar(target, keyValue);
 	} else {
 		switch (keyValue) {
 			case "+":
 			case "-":
 			case "*":
 			case "/":
-				updateOperator(keyValue);
+				updateOperator(target, keyValue);
 				break;
 			case ".":
 				break;
@@ -75,6 +80,7 @@ document.addEventListener("keydown", (e) => {
 			case "=":
 				equalClicked = true;
 				operate(operator, previousOperend, currentOperend);
+				resetBtns();
 				break;
 			case "Backspace":
 				if (e.shiftKey) {
@@ -86,40 +92,46 @@ document.addEventListener("keydown", (e) => {
 	}
 });
 /*************************** Functions ********************************/
-function updateOperator(action) {
+function addKeyboardCodes() {
+	numberKeys.forEach((key) => {
+		const value = key.dataset.value;
+		const code = value.charCodeAt();
+		key.dataset.code = code;
+	});
+	operatorKeys.forEach((key) => {
+		const action = key.dataset.action;
+		const code = action.charCodeAt();
+		key.dataset.code = code;
+	});
+}
+function updateOperator(target, action) {
 	if (operator && !equalClicked) {
 		operate(operator, previousOperend, currentOperend);
 	}
 	updateOperends("");
 	operator = operations[action];
+	// visuals
+	operatorKeys.forEach((key) => {
+		key.classList.remove("active");
+	});
+	target.classList.add("active");
 }
 function deleteOneCharToLeft() {
 	if (displayBox.textContent.length === 1) {
 		reset();
-		retur;
+		return;
 	}
 	currentOperend = currentOperend.toString().slice(0, -1);
 	updateDisplay();
 }
-function appendNewChar(value) {
+function appendNewChar(target, value) {
 	if (value === "." && displayBox.textContent.includes(".")) return;
 	currentOperend += value;
 	updateDisplay();
-}
-// Manage Interactivity
-function manageInteractivity(target, value, action) {
-	if (action === "calculate" || action === "clear") {
-		resetBtns();
-	}
-	if (operations[action]) {
-		operatorKeys.forEach((key) => {
-			key.classList.remove("active");
-		});
-	} else if (value) {
-		numberKeys.forEach((key) => {
-			key.classList.remove("active");
-		});
-	}
+	// visuals
+	numberKeys.forEach((key) => {
+		key.classList.remove("active");
+	});
 	target.classList.add("active");
 }
 // Operator function
