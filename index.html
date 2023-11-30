@@ -19,107 +19,119 @@
 				class="calculator__display"
 			></div>
 			<div class="calculator__keys">
-				<div class="calculator__operators">
-					<button
-						class="key key--operator"
-						data-action="add"
-					>
-						+
-					</button>
-					<button
-						class="key key--operator"
-						data-action="subtract"
-					>
-						-
-					</button>
-					<button
-						class="key key--operator"
-						data-action="multiply"
-					>
-						*
-					</button>
-					<button
-						class="key key--operator"
-						data-action="divide"
-					>
-						/
-					</button>
-				</div>
-				<div class="calculator__numbers">
-					<button
-						class="key"
-						data-value="1"
-					>
-						1
-					</button>
-					<button
-						class="key"
-						data-value="2"
-					>
-						2
-					</button>
-					<button
-						class="key"
-						data-value="3"
-					>
-						3
-					</button>
-					<button
-						class="key"
-						data-value="4"
-					>
-						4
-					</button>
-					<button
-						class="key"
-						data-value="5"
-					>
-						5
-					</button>
-					<button
-						class="key"
-						data-value="6"
-					>
-						6
-					</button>
-					<button
-						class="key"
-						data-value="7"
-					>
-						7
-					</button>
-					<button
-						class="key"
-						data-value="8"
-					>
-						8
-					</button>
-					<button
-						class="key"
-						data-value="9"
-					>
-						9
-					</button>
-				</div>
-				<div class="calculator__footer">
-					<button
-						class="key key--equal"
-						data-action="calculate"
-					>
-						=
-					</button>
-					<button
-						class="key key--clear"
-						data-action="clear"
-					>
-						clear
-					</button>
-					<button
-						class="key key--decimal"
-						data-action="decimal"
-					>
-						.
-					</button>
+				<div class="flex">
+					<div>
+						<div class="calculator__numbers">
+							<button
+								class="key"
+								data-value="1"
+							>
+								1
+							</button>
+							<button
+								class="key"
+								data-value="2"
+							>
+								2
+							</button>
+							<button
+								class="key"
+								data-value="3"
+							>
+								3
+							</button>
+							<button
+								class="key"
+								data-value="4"
+							>
+								4
+							</button>
+							<button
+								class="key"
+								data-value="5"
+							>
+								5
+							</button>
+							<button
+								class="key"
+								data-value="6"
+							>
+								6
+							</button>
+							<button
+								class="key"
+								data-value="7"
+							>
+								7
+							</button>
+							<button
+								class="key"
+								data-value="8"
+							>
+								8
+							</button>
+							<button
+								class="key"
+								data-value="9"
+							>
+								9
+							</button>
+						</div>
+						<div class="calculator__footer">
+							<button
+								class="key key--clear"
+								data-action="clear"
+							>
+								clear
+							</button>
+							<button
+								class="key"
+								data-value="0"
+							>
+								0
+							</button>
+							<button
+								class="key key--decimal"
+								data-action="decimal"
+							>
+								.
+							</button>
+						</div>
+					</div>
+					<div class="flex flex-col">
+						<div class="calculator__operators">
+							<button
+								class="key key--operator"
+								data-action="add"
+							>
+								+
+							</button>
+							<button
+								class="key key--operator"
+								data-action="subtract"
+							>
+								-
+							</button>
+							<button
+								class="key key--operator"
+								data-action="multiply"
+							>
+								*
+							</button>
+							<button
+								class="key key--operator"
+								data-action="divide"
+							>
+								/
+							</button>
+						</div>
+						<button
+							class="key key--equal flex-1"
+							data-action="calculate"
+						>
+							=
+						</button>
+					</div>
 				</div>
 			</div>
 		</div>

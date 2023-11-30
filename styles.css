@@ -1,0 +1,118 @@
+html {
+	height: 100%;
+	box-sizing: border-box;
+}
+*,
+*::before,
+*::after {
+	box-sizing: inherit;
+	margin: 0;
+	padding: 0;
+}
+
+body {
+	min-height: 100vh;
+	background-color: hsl(0 0% 16%);
+	display: grid;
+	place-items: center;
+}
+.flex {
+	display: flex;
+}
+.items-start {
+	align-items: start;
+}
+.flex-wrap {
+	flex-wrap: wrap;
+}
+.flex-col {
+	flex-direction: column;
+}
+.flex-1 {
+	flex: 1;
+}
+.self-stretch {
+	align-self: stretch;
+}
+/**************** Calculator *****************/
+.calculator {
+	display: grid;
+	grid-template-rows: 240px 1fr;
+	border: 2rem solid hsl(0 0% 20%);
+	border-radius: 1rem;
+}
+/**************** Display *****************/
+.calculator__display {
+	border: 1rem solid hsl(0 0% 20%);
+	background-color: hsl(210 40% 60%);
+	border-bottom-width: 3rem;
+	font-size: 6rem;
+	padding-inline: 2rem;
+	display: flex;
+	align-items: center;
+}
+/**************** Numbers Keys *****************/
+.calculator__numbers {
+	display: grid;
+	grid-template-columns: repeat(3, 200px);
+}
+/***************** Operators Keys *****************/
+.calculator__operators {
+	display: grid;
+	grid-template-areas: "add sub" "mul div";
+}
+/**************** Footer Keys *****************/
+.calculator__footer {
+	display: flex;
+}
+.calculator__footer > * {
+	flex: 1;
+}
+/**************** Button *****************/
+.key {
+	cursor: pointer;
+	font-size: 3rem;
+	display: grid;
+	place-items: center;
+	font-weight: bold;
+	background-color: hsl(180 20% 80%);
+	border: 1px solid black;
+	padding-block: 2rem;
+	transition: 100ms ease-in-out;
+	transform: scale(100%);
+}
+.key:hover {
+	background-color: hsl(180 30% 70%);
+}
+.key[data-value].active {
+	box-shadow: 0px 0px 2px 2px hsl(0 0% 30%) inset;
+	transform: scale(95%);
+}
+
+.key--operator {
+	min-width: 140px;
+	background-color: hsl(50 80% 80%);
+}
+.key--operator:hover {
+	background-color: hsl(50 50% 60%);
+}
+.key--operator.active {
+	transform: scale(100%);
+	box-shadow: 0px 0px 4px 4px hsl(200, 60%, 60%) inset;
+}
+.key--equal {
+	background-color: hsl(120 50% 70%);
+	font-size: 5rem;
+}
+.key--equal:hover {
+	background-color: hsl(120 60% 60%);
+}
+.key--decimal {
+	background-color: hsl(180 30% 60%);
+}
+.key--clear {
+	background-color: hsl(0 70% 60%);
+}
+.key--clear:hover {
+	background-color: hsl(0 60% 50%);
+}

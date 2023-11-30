@@ -2,7 +2,9 @@
 const calculator = document.querySelector(".calculator");
 const displayBox = document.querySelector(".calculator__display");
 const calculatorKeys = document.querySelector(".calculator__keys");
-
+const allKeys = document.querySelectorAll(".key");
+const numberKeys = document.querySelectorAll(".key[data-value]");
+const operatorKeys = document.querySelectorAll(".key--operator");
 // Initial Values
 let operations = {
 	add: (x, y) => parseFloat((x + y).toFixed(2)),
@@ -50,8 +52,25 @@ calculatorKeys.addEventListener("click", (e) => {
 		currentOperend += value;
 		updateDisplay();
 	}
+	manageInteractivity(target, value, action);
 });
 /*************************** Functions ********************************/
+// Manage Interactivity
+function manageInteractivity(target, value, action) {
+	if (action === "calculate" || action === "clear") {
+		resetBtns();
+	}
+	if (operations[action]) {
+		operatorKeys.forEach((key) => {
+			key.classList.remove("active");
+		});
+	} else if (value) {
+		numberKeys.forEach((key) => {
+			key.classList.remove("active");
+		});
+	}
+	target.classList.add("active");
+}
 // Operator function
 function operate(operator, x, y) {
 	result = operator(+x, +y);
@@ -75,9 +94,15 @@ function clearDisplay() {
 }
 function reset() {
 	clearDisplay();
+	resetBtns();
 	previousOperend = "";
 	currentOperend = "";
 	operator = null;
 	result = null;
 	equalClicked = false;
+}
+function resetBtns() {
+	allKeys.forEach((key) => {
+		key.classList.remove("active");
+	});
 }
