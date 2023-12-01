@@ -42,7 +42,7 @@ calculatorKeys.addEventListener("click", (e) => {
 			reset();
 		}
 		if (action === "decimal") {
-			appendNewChar(".");
+			appendNewChar(target, ".");
 		}
 		if (action === "delete") {
 			deleteOneCharToLeft();
@@ -75,6 +75,7 @@ document.addEventListener("keydown", (e) => {
 				updateOperator(target, keyValue);
 				break;
 			case ".":
+				appendNewChar(target, ".");
 				break;
 			case "Enter":
 			case "=":
