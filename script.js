@@ -32,6 +32,7 @@ calculatorKeys.addEventListener("click", (e) => {
 	if (action) {
 		if (operations[action]) {
 			updateOperator(target, action);
+			updateDisplay("0");
 		}
 		if (action === "calculate") {
 			equalClicked = true;
@@ -73,6 +74,7 @@ document.addEventListener("keydown", (e) => {
 			case "*":
 			case "/":
 				updateOperator(target, keyValue);
+				updateDisplay("0");
 				break;
 			case ".":
 				appendNewChar(target, ".");
